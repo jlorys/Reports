@@ -1,0 +1,80 @@
+body {
+    background: linear-gradient(#275782,#00040f) no-repeat fixed;
+}
+
+table {
+    width: 100%;
+}
+
+td {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+p{
+	font-size: 24px;
+    font-style: italic;
+    color: white;
+}
+
+#table th:nth-child(1) {
+  width: 1.5%;
+}
+
+#table th:nth-child(4) {
+  width: 3%;
+}
+
+#table th:nth-child(5) {
+  width: 3%;
+}
+
+#table th:nth-child(6) {
+  width: 150px;
+}
+
+#table td:nth-child(6) {
+  font-size: 12px;
+  font-style: italic;
+  color: white;
+  background-color: #666699;
+}
+
+#table th:nth-child(7) {
+  width: 50px;
+}
+
+#table th:nth-child(8) {
+  width: 50px;
+}
+
+#table th:nth-child(9) {
+  width: 50px;
+}
+
+#tableUsers th:nth-child(1) {
+  width: 1.5%;
+}
+
+#tableUsers th:nth-child(4) {
+  width: 100px;
+}
+
+#tableUsers th:nth-child(5) {
+  width: 50px;
+}
+
+#tableUsers th:nth-child(6) {
+  width: 50px;
+}
+
+.margin-top-5 {
+	margin-top: 10px;
+}
+
+.panel-scroll {
+	height: 300px;
+	overflow-y: auto;
+}

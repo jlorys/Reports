@@ -1,0 +1,46 @@
+<style>
+.user {
+	font-weight: bold;
+}
+
+.logout {
+	cursor: pointer;
+	margin-left: 5px;
+}
+.navbar {
+    color:white;
+    background-color: black;
+}
+</style>
+
+<nav class="navbar navbar-default navbar-static-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+				aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" ui-sref="report">Moje Sprawozdania </a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li ng-show="user.principal.name"><a ui-sref="users">Użytkownicy</a></li>
+			</ul>
+			<ul class="nav navbar-nav">
+				<li ng-show="user.principal.name"><a ui-sref="allreports">Wszystkie sprawozdania</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+
+				<li ng-show="user.principal.name"><a> 
+				<span class="user">Cześć, {{user.principal.name}}</span> 
+				<button class="btn btn-secondary" ng-click="logout()" href="" class="logout">Wyloguj</button>
+				</a></li>
+				<li ng-show="!user.principal.name"><a ui-sref="register">Zarejestruj
+						się</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>

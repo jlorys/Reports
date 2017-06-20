@@ -1,0 +1,84 @@
+<div class="row">
+	<div class="col-sm-6 ">
+		<div class="panel panel-default">
+			<div class="panel-heading">Wystaw Ocenę Sprawozdania</div>
+			<div class="panel-body">
+				<div class="col-md-12">
+					<form ng-submit="submit()" name="reportForm" novalidate>
+						<div class="form-group">
+						<label for="id">Id sprawozdania:</label>
+						<input type="text" ng-class="{ 'has-error': reportForm.id.$invalid && reportForm.id.$dirty }" class="form-control" ng-model="report.id" id="id" name="id" readonly>
+
+						<label for="grade">Ocena sprawozdania:</label>
+						<select required ng-class="{ 'has-error': reportForm.grade.$invalid && reportForm.grade.$dirty }"
+								class="form-control" ng-model="report.grade" id="grade"
+								name="grade">
+								<option value="2">2</option>
+								<option value="2.5">2.5</option>
+								<option value="3">3</option>
+								<option value="3.5">3.5</option>
+								<option value="4">4</option>
+								<option value="4.5">4.5</option>
+								<option value="5">5</option>
+						</select>
+
+                        </div>
+						<button type="submit" class="btn btn-primary" ng-disabled="reportForm.$invalid">{{buttonGradeText}}</button>
+
+						<div class="alert alert-info margin-top-5" ng-show="message">{{message}}</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Wszystkie sprawozdania użytkowników
+			</div>
+			<div class="panel-body">
+				<div class="alert alert-info margin-top-5" ng-show="deleteMessage">{{deleteMessage}}</div>
+				<table id="table" class="table table-bordered">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Nazwa</th>
+							<th>Opis</th>
+							<th>Dodał</th>
+							<th>Ocena</th>
+							<th>Data</th>
+							<th></th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="report in reportList">
+							<td>{{report.id}}</td>
+							<td>{{report.name}}{{report.extension}}</td>
+							<td>{{report.description}}</td>
+							<td>{{report.owner.username}}</td>
+							<td>{{report.grade}}</td>
+							<td>{{report.datetime}}</td>
+							<td><button type="button" class="btn btn-default btn-sm"
+									ng-click="initAddGrade(report)">
+									<span class="glyphicon glyphicon-edit"></span>
+								</button></td>
+							<td><button type="button" class="btn btn-default btn-sm"
+									ng-click="initDownload(report)">
+									<span class="glyphicon glyphicon-download-alt"></span>
+								</button></td>
+							<td>
+								<button type="button" class="btn btn-default btn-sm"
+									ng-click="deleteReport(report)">
+									<span class="glyphicon glyphicon-remove"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>

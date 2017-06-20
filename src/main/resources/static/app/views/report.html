@@ -1,0 +1,67 @@
+<div class="row">
+	<div class="col-sm-6 ">
+		<div class="panel panel-default">
+			<div class="panel-heading">Dodaj swoje sprawozdanie</div>
+			<div class="panel-body">
+				<div class="col-md-12">
+					<form ng-submit="submit()" name="reportForm" novalidate>
+						<div class="form-group">
+						<label for="description">Opis sprawozdania:</label>
+						<input type="text" ng-class="{ 'has-error': reportForm.description.$invalid && reportForm.description.$dirty }" class="form-control" ng-model="description" id="description" name="description" required>
+						<label for="file">Plik (Max. 100MB):</label>
+						<input type="file" valid-file class="form-control" ng-model="file" id="file" name="file" required>
+                        </div>
+						<button type="submit" class="btn btn-primary" ng-disabled="uploading || reportForm.$invalid">{{buttonText}}</button>
+
+						<div class="alert alert-info margin-top-5" ng-show="message">{{message}}</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Twoje dodane sprawozdania
+			</div>
+			<div class="panel-body">
+				<div class="alert alert-info margin-top-5" ng-show="deleteMessage">{{deleteMessage}}</div>
+				<table id="table" class="table table-bordered">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Nazwa</th>
+							<th>Opis</th>
+							<th>Dodał</th>
+							<th>Ocena</th>
+							<th>Data</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="report in reportList">
+							<td>{{report.id}}</td>
+							<td>{{report.name}}{{report.extension}}</td>
+							<td>{{report.description}}</td>
+							<td>{{report.owner.username}}</td>
+							<td>{{report.grade}}</td>
+							<td>{{report.datetime}}</td>
+							<td><button type="button" class="btn btn-default btn-sm"
+									ng-click="initDownload(report)">
+									<span class="glyphicon glyphicon-download-alt"></span>
+								</button></td>
+							<td>
+								<button type="button" class="btn btn-default btn-sm"
+									ng-click="deleteReport(report)">
+									<span class="glyphicon glyphicon-remove"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>
