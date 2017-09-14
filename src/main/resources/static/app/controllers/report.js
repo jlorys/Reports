@@ -21,7 +21,7 @@ angular.module('Reports')
 		});
 	};
 	$scope.initDownload = function(report) {
-		$http.get('api/report/file/'+report.id, { responseType: 'arraybuffer' }).then(function(response) {
+		$http.get('api/userReport/file/'+report.id, { responseType: 'arraybuffer' }).then(function(response) {
 			var file = new Blob([response.data]);
 			var filename = report.name;
 			var extension = report.extension;

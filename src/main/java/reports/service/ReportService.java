@@ -54,6 +54,19 @@ public class ReportService {
 
     }
 
+    public void downloadLoggedUserFile(Long id, HttpServletResponse response) throws IOException {
+        Report report = reportRepository.findOne(id);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedUsername = auth.getName();
+
+        if(report.getOwner().getUsername().equals(loggedUsername)){
+            downloadFile(id, response);
+        }else{
+            throw new RuntimeException("To nie twoje sprawozdanie!");
+        }
+    }
+
     public void downloadFile (Long id, HttpServletResponse response)
             throws IOException {
 
@@ -123,5 +136,4 @@ public class ReportService {
         reportTmp.setGrade(report.getGrade());
         reportRepository.save(reportTmp);
     }
-
 }

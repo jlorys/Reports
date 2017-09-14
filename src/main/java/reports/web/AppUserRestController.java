@@ -30,6 +30,7 @@ public class AppUserRestController {
 		appUserService.userById(id);
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
 	public void deleteUser(@PathVariable Long id) {
 		appUserService.deleteUser(id);

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class ReportRestController {
 	@Autowired
 	private ReportService reportService;
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/reports", method = RequestMethod.GET)
 	public List<NoFile> reports() {
 		return reportService.findAllReports();
@@ -35,12 +37,20 @@ public class ReportRestController {
 	public List<NoFile> userReports() {
 	    return reportService.findAllUserReports();
 	}
-	
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/report/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Report> deleteReport(@PathVariable Long id) {
         return reportService.deleteReport(id);
     }
-	
+
+	@RequestMapping(value = "/userReport/file/{id}", method = RequestMethod.GET)
+	public void downloadLoggedUserFile (@PathVariable Long id, HttpServletResponse response)
+			throws IOException {
+        reportService.downloadLoggedUserFile(id, response);
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/report/file/{id}", method = RequestMethod.GET)
 	public void downloadFile (@PathVariable Long id, HttpServletResponse response) throws IOException {
         reportService.downloadFile(id, response);
@@ -55,7 +65,8 @@ public class ReportRestController {
 	public void uploadDetails(@RequestBody Report report) throws IOException {
         reportService.uploadDetails(report);
     }
-	
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/report/uploadgrade", method = RequestMethod.PUT)
 	public void uploadGrade(@RequestBody Report report) throws IOException {
         reportService.uploadGrade(report);
