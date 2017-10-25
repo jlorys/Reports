@@ -2,6 +2,8 @@
 ## Synopsis
 Reports is Spring web application for storing and grading school reports.
 
+## Visual presentation
+
 ![1](https://user-images.githubusercontent.com/24614511/27336715-b8c8cb08-55d0-11e7-90d1-c1d1c2360cd0.jpg)<br />
 ![2](https://user-images.githubusercontent.com/24614511/27336722-bbd1c822-55d0-11e7-9a47-4f724903007d.jpg)<br />
 ![3](https://user-images.githubusercontent.com/24614511/27336723-bda767d8-55d0-11e7-81ea-b252c8cacac3.jpg)<br />
