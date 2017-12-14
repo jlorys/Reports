@@ -24,9 +24,9 @@ public class AppUserService {
     public ResponseEntity<AppUser> userById(Long id) {
         AppUser appUser = appUserRepository.findOne(id);
         if (appUser == null) {
-            return new ResponseEntity<AppUser>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            return new ResponseEntity<AppUser>(appUser, HttpStatus.OK);
+            return new ResponseEntity<>(appUser, HttpStatus.OK);
         }
     }
 
@@ -35,12 +35,12 @@ public class AppUserService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String loggedUsername = auth.getName();
         if (appUser == null) {
-            return new ResponseEntity<AppUser>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else if (appUser.getUsername().equalsIgnoreCase(loggedUsername)) {
             throw new RuntimeException("Nie możesz usunąć siebie samego!");
         } else {
             appUserRepository.delete(appUser);
-            return new ResponseEntity<AppUser>(appUser, HttpStatus.OK);
+            return new ResponseEntity<>(appUser, HttpStatus.OK);
         }
     }
 
@@ -51,7 +51,7 @@ public class AppUserService {
         else if (appUser.getPassword().length()<5) {
             throw new RuntimeException("Hasło musi mieć co najmniej 5 znaków");
         }
-        return new ResponseEntity<AppUser>(appUserRepository.save(appUser), HttpStatus.CREATED);
+        return new ResponseEntity<>(appUserRepository.save(appUser), HttpStatus.CREATED);
     }
 
     public AppUser updateUser(AppUser appUser) {

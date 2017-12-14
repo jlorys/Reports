@@ -21,7 +21,7 @@ public class HomeService {
             throw new RuntimeException("Hasło musi mieć co najmniej 5 znaków");
         }
         appUser.setRole("USER");
-        return new ResponseEntity<AppUser>(appUserRepository.save(appUser), HttpStatus.CREATED);
+        return new ResponseEntity<>(appUserRepository.save(appUser), HttpStatus.CREATED);
     }
 
 

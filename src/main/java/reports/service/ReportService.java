@@ -46,10 +46,10 @@ public class ReportService {
     public ResponseEntity<Report> deleteReport(@PathVariable Long id) {
         Report report = reportRepository.findOne(id);
         if (report == null) {
-            return new ResponseEntity<Report>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             reportRepository.delete(report);
-            return new ResponseEntity<Report>(report, HttpStatus.OK);
+            return new ResponseEntity<>(report, HttpStatus.OK);
         }
 
     }
