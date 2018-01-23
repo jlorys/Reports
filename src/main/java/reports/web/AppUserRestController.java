@@ -1,7 +1,6 @@
 package reports.web;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import reports.domain.AppUser;
 import reports.service.AppUserService;
 
 @RestController
 @RequestMapping(value = "/api")
 public class AppUserRestController {
+
 	@Autowired
 	private AppUserService appUserService;
 
@@ -32,10 +31,7 @@ public class AppUserRestController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
-	public void deleteUser(@PathVariable Long id) {
-		appUserService.deleteUser(id);
-
-	}
+	public void deleteUser(@PathVariable Long id) { appUserService.deleteUser(id); }
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/users", method = RequestMethod.POST)

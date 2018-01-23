@@ -24,5 +24,4 @@ public class HomeService {
         return new ResponseEntity<>(appUserRepository.save(appUser), HttpStatus.CREATED);
     }
 
-
 }

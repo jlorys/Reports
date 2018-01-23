@@ -14,6 +14,7 @@ import reports.service.HomeService;
 
 @RestController
 public class HomeRestController {
+
 	@Autowired
 	private HomeService homeService;
 
@@ -26,4 +27,5 @@ public class HomeRestController {
 	public Principal user(Principal principal) {
 		return principal;
 	}
+
 }

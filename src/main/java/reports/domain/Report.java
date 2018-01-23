@@ -1,6 +1,5 @@
 package reports.domain;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -79,10 +78,6 @@ public class Report {
 
 	public void setGrade(String grade) {
 		this.grade = grade;
-	}
-
-	public String getDatetime() {
-		return datetime;
 	}
 
 	public void setDatetime(String datetime) {

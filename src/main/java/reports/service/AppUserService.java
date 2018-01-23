@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import reports.domain.AppUser;
 import reports.repository.AppUserRepository;
-
 import java.util.List;
 
 @Service

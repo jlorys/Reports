@@ -15,8 +15,6 @@ public class ReportsApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ReportsApplication.class, args);
-
     }
-
 
 }
