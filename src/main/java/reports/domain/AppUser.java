@@ -2,7 +2,7 @@ package reports.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,7 +39,7 @@ public class AppUser implements UserDetails {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-	private List<Report> reports;
+	private Set<Report> reports;
 
 	public Long getId() {
 		return id;
@@ -81,11 +81,11 @@ public class AppUser implements UserDetails {
 		this.role = role;
 	}
 
-	public List<Report> getReports() {
+	public Set<Report> getReports() {
 		return reports;
 	}
 
-	public void setReports(List<Report> reports) {
+	public void setReports(Set<Report> reports) {
 		this.reports = reports;
 	}
 
