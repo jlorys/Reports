@@ -1,6 +1,8 @@
 package reports.web;
 
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,10 @@ public class AppUserRestController {
 
 	@Autowired
 	private AppUserService appUserService;
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/loggedUsers", method = RequestMethod.GET)
+	public Set<AppUser> loggedAppUsers() {return appUserService.loggedInUsers();}
 
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	public List<AppUser> appUsers() {

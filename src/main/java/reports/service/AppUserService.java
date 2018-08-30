@@ -5,10 +5,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Service;
 import reports.domain.AppUser;
 import reports.repository.AppUserRepository;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AppUserService {
@@ -16,8 +22,32 @@ public class AppUserService {
     @Autowired
     AppUserRepository appUserRepository;
 
+    @Autowired
+    private SessionRegistry sessionRegistry;
+
     public List<AppUser> appUsers(){
         return appUserRepository.findAll();
+    }
+
+    public Set<AppUser> loggedInUsers() {
+        List<Object> allPrincipals = sessionRegistry.getAllPrincipals();
+        Set<AppUser> allAppUsers = new HashSet<>();
+        allAppUsers.clear();
+
+        for(final Object principal : allPrincipals) {
+            if(principal instanceof AppUser) {
+                AppUser user = (AppUser) principal;
+
+                List<SessionInformation> activeUserSessions =
+                        sessionRegistry.getAllSessions(principal,
+                                /* includeExpiredSessions */ false); // Should not return null;
+
+                if (!activeUserSessions.isEmpty()) {
+                    System.out.println(user);
+                    allAppUsers.add(user);}
+            }
+        }
+        return allAppUsers;
     }
 
     public ResponseEntity<AppUser> userById(Long id) {
