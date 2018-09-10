@@ -51,7 +51,6 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().fullyAuthenticated().and()
 				// switch on basic authentication
 				.httpBasic().and()
-				// no session
 				.sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry());
 	}
 

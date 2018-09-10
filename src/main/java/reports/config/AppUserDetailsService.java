@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import reports.domain.AppUser;
 import reports.repository.AppUserRepository;
 
-//This Service class for providing the user credentials from the database.
 @Service
 public class AppUserDetailsService implements UserDetailsService {
 
