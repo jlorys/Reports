@@ -7,11 +7,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import reports.domain.AppUser;
 import reports.repository.AppUserRepository;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,11 +19,16 @@ import java.util.Set;
 @Service
 public class AppUserService {
 
-    @Autowired
-    AppUserRepository appUserRepository;
+    private AppUserRepository appUserRepository;
+    private SessionRegistry sessionRegistry;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private SessionRegistry sessionRegistry;
+    public AppUserService(AppUserRepository appUserRepository, SessionRegistry sessionRegistry, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.appUserRepository = appUserRepository;
+        this.sessionRegistry = sessionRegistry;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     public List<AppUser> appUsers(){
         return appUserRepository.findAll();
@@ -80,6 +85,7 @@ public class AppUserService {
         else if (appUser.getPassword().length()<5) {
             throw new RuntimeException("Hasło musi mieć co najmniej 5 znaków");
         }
+        appUser.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
         return new ResponseEntity<>(appUserRepository.save(appUser), HttpStatus.CREATED);
     }
 
@@ -91,6 +97,7 @@ public class AppUserService {
         else if (appUser.getPassword().length()<5) {
             throw new RuntimeException("Hasło musi mieć co najmniej 5 znaków");
         }
+        appUser.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
         return appUserRepository.save(appUser);
     }
 }

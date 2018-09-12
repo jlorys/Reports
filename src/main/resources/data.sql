@@ -1,2 +1,2 @@
-insert into app_user(id,name,username,password,role) values (1,'Kuba','admin','admin','ADMIN');
-insert into app_user(id,name,username,password,role) values (2,'Krystyna','user','user','USER');
+insert into app_user(id,name,username,password,role) values (1,'Kuba','admin','$2a$11$91yZ18mkqjbswmV.VNgVgu6k5Cczg6Bw4CIaaYNVGgF5c.ElOabSa','ADMIN');
+insert into app_user(id,name,username,password,role) values (2,'Krystyna','user','$2a$11$DAWuze8ei2xOkBQMM5226OhNKRN6URlGBPudLh0uRLdYv6i1zWK/W','USER');

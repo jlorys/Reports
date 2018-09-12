@@ -69,9 +69,13 @@ public class AppUser implements UserDetails {
 		return password;
 	}
 
+	public void setPassword(String password) {this.password = password;}
+
 	public void setRole(String role) {
 		this.role = role;
 	}
+
+	public String getRole() {return role;}
 
 	public Set<Report> getReports() {
 		return reports;
