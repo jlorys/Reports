@@ -8,7 +8,9 @@ angular.module('Reports')
 	});
 	$scope.logout = function() {
 		AuthenticationService.user = null;
+		AuthenticationService.removeJwtToken();
 		$rootScope.$broadcast('LogoutSuccessful');
 		$state.go('log');
+        $scope.authenticated = false;
 	};
 });

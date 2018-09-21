@@ -22,7 +22,7 @@ public class ReportRestController {
 	@Autowired
 	private ReportService reportService;
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/reports", method = RequestMethod.GET)
 	public List<NoFile> reports() {
 		return reportService.findAllReports();
@@ -33,7 +33,7 @@ public class ReportRestController {
 	    return reportService.findAllUserReports();
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/report/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Report> deleteReport(@PathVariable Long id) {
         return reportService.deleteReport(id);
@@ -45,7 +45,7 @@ public class ReportRestController {
         reportService.downloadLoggedUserFile(id, response);
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/report/file/{id}", method = RequestMethod.GET)
 	public void downloadFile (@PathVariable Long id, HttpServletResponse response) throws IOException {
         reportService.downloadFile(id, response);
@@ -61,7 +61,7 @@ public class ReportRestController {
         reportService.uploadDetails(report);
     }
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/report/uploadgrade", method = RequestMethod.PUT)
 	public void uploadGrade(@RequestBody Report report) throws IOException {
         reportService.uploadGrade(report);

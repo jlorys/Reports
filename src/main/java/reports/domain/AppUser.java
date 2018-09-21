@@ -1,20 +1,11 @@
 package reports.domain;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,16 +21,20 @@ public class AppUser implements UserDetails {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="sequser")
 	private Long id;
 	private String name;
-
 	@Column(unique = true)
 	private String username;
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
-	private String role;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
 	private Set<Report> reports;
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "user_authority",
+			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+	private Set<Authority> authorities;
 
 	public Long getId() {
 		return id;
@@ -70,12 +65,6 @@ public class AppUser implements UserDetails {
 	}
 
 	public void setPassword(String password) {this.password = password;}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public String getRole() {return role;}
 
 	public Set<Report> getReports() {
 		return reports;
@@ -109,11 +98,13 @@ public class AppUser implements UserDetails {
 		return true;
 	}
 
-	@JsonIgnore
+
+	public void setAuthorities(Set<Authority> authorities) {
+		this.authorities = authorities;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Collection<GrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority(role));
-		return authorities;
+		return this.authorities;
 	}
 }

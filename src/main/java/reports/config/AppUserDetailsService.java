@@ -20,5 +20,4 @@ public class AppUserDetailsService implements UserDetailsService {
         AppUser appUser = appUserRepository.findOneByUsername(username);
         return appUser;
     }
-
 }

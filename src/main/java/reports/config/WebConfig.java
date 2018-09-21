@@ -1,65 +1,94 @@
 package reports.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import reports.config.security.TokenHelper;
+import reports.config.security.auth.RestAuthenticationEntryPoint;
+import reports.config.security.auth.TokenAuthenticationFilter;
 
-@Configurable
+@Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebConfig extends WebSecurityConfigurerAdapter {
 
+	@Bean
+	public PasswordEncoder passwordEncoder() {return new BCryptPasswordEncoder();}
+
 	@Autowired
-	AppUserDetailsService appUserDetailsService;
+	private AppUserDetailsService appUserDetailsService;
+
+	@Autowired
+	private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
 	@Bean
-	public SessionRegistry sessionRegistry() {
-		return new SessionRegistryImpl();
-	}
-
-	@Bean
-	public DaoAuthenticationProvider authProvider() {
-		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-		authProvider.setUserDetailsService(appUserDetailsService);
-		authProvider.setPasswordEncoder(encoder());
-		return authProvider;
-	}
-
-	@Bean
-	public PasswordEncoder encoder() {
-		return new BCryptPasswordEncoder(11);
-	}
-
 	@Override
-	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(authProvider());
+	public AuthenticationManager authenticationManager() throws Exception {
+		return super.authenticationManager();
 	}
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(appUserDetailsService);
+		auth.userDetailsService(appUserDetailsService)
+				.passwordEncoder(passwordEncoder());
 	}
+
+	@Autowired
+	TokenHelper tokenHelper;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		        .csrf().disable()
-				// starts authorizing configurations
+				.sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS ).and()
+				.exceptionHandling().authenticationEntryPoint( restAuthenticationEntryPoint ).and()
 				.authorizeRequests()
+				.antMatchers(
+						HttpMethod.GET,
+						"/",
+						"/auth/**",
+						"/*.html",
+						"/favicon.ico",
+						"/**/*.html",
+						"/**/*.css",
+						"/**/*.js"
+				).permitAll()
 				.antMatchers("/", "/index.html", "/app/**", "/libraries/**", "/register", "/favicon.ico").permitAll()
-				// secure all other urls
-				.anyRequest().fullyAuthenticated().and()
-				// switch on basic authentication
-				.httpBasic().and()
-				.sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry());
+				.antMatchers("/auth/**").permitAll()
+				.anyRequest().authenticated().and()
+				.addFilterBefore(new TokenAuthenticationFilter(tokenHelper, appUserDetailsService), BasicAuthenticationFilter.class);
+
+		http.csrf().disable();
 	}
 
+
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		// TokenAuthenticationFilter will ignore the below paths
+		web.ignoring().antMatchers(
+				HttpMethod.POST,
+				"/auth/login"
+		);
+		web.ignoring().antMatchers(
+				HttpMethod.GET,
+				"/",
+				"/*.html",
+				"/favicon.ico",
+				"/**/*.html",
+				"/**/*.css",
+				"/**/*.js"
+		);
+
+	}
 }

@@ -1,9 +1,9 @@
 package reports.web;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,32 +20,29 @@ public class AppUserRestController {
 	@Autowired
 	private AppUserService appUserService;
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value = "/loggedUsers", method = RequestMethod.GET)
-	public Set<AppUser> loggedAppUsers() {return appUserService.loggedInUsers();}
-
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	public List<AppUser> appUsers() {
 		return appUserService.appUsers();
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
-	public void userById(@PathVariable Long id) {
-		appUserService.userById(id);
+	public ResponseEntity<AppUser> userById(@PathVariable Long id) {
+		return appUserService.userById(id);
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
 	public void deleteUser(@PathVariable Long id) { appUserService.deleteUser(id); }
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
 	public void createUser(@RequestBody AppUser appUser) {
 		appUserService.createUser(appUser);
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value = "/users", method = RequestMethod.PUT)
 	public void updateUser(@RequestBody AppUser appUser) {
 		appUserService.updateUser(appUser);

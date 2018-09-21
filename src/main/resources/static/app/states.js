@@ -22,7 +22,7 @@ angular.module('Reports').config(function($stateProvider, $urlRouterProvider) {
 		parent : 'navbar',
 		url : '/users',
 		data : {
-			role : 'ADMIN'
+			role : '2'
 		},
 		views : {
 			'content@' : {
@@ -70,7 +70,7 @@ angular.module('Reports').config(function($stateProvider, $urlRouterProvider) {
 		parent : 'navbar',
 		url : '/allreports',
 		data : {
-			role : 'ADMIN'
+			role : '2'
 		},
 		views : {
 			'content@' : {

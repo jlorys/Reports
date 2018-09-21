@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(#275782,#00040f) no-repeat fixed;
+    background: linear-gradient(greenyellow,plum) no-repeat fixed;
 }
 
 table {
@@ -56,10 +56,6 @@ p{
 
 #tableUsers th:nth-child(1) {
   width: 1.5%;
-}
-
-#tableUsers th:nth-child(4) {
-  width: 100px;
 }
 
 #tableUsers th:nth-child(5) {

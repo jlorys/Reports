@@ -8,7 +8,6 @@
 	margin-left: 5px;
 }
 .navbar {
-    color:white;
     background-color: black;
 }
 </style>
@@ -23,22 +22,23 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" ui-sref="report">Moje Sprawozdania </a>
+			<a class="navbar-brand" ui-sref="report" style="color: greenyellow">Moje Sprawozdania </a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li ng-show="user.principal.name"><a ui-sref="users">Użytkownicy</a></li>
+				<li ng-show="user"><a ui-sref="users" style="color: greenyellow">Użytkownicy</a></li>
 			</ul>
 			<ul class="nav navbar-nav">
-				<li ng-show="user.principal.name"><a ui-sref="allreports">Wszystkie sprawozdania</a></li>
+				<li ng-show="user"><a ui-sref="allreports" style="color: greenyellow">Wszystkie sprawozdania</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 
-				<li ng-show="user.principal.name"><a> 
-				<span class="user">Cześć, {{user.principal.name}}</span> 
-				<button class="btn btn-secondary" ng-click="logout()" href="" class="logout">Wyloguj</button>
+				<li ng-show="user"><a>
+				<span class="user" style="color: greenyellow">{{user}} </span>
+				<button class="btn btn-secondary" ng-click="logout()" href="" class="logout">
+					<span class="glyphicon glyphicon-off"></span></button>
 				</a></li>
-				<li ng-show="!user.principal.name"><a ui-sref="register">Zarejestruj
+				<li ng-show="!user"><a ui-sref="register" style="color: greenyellow">Zarejestruj
 						się</a></li>
 			</ul>
 		</div>

@@ -5,54 +5,35 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.session.SessionInformation;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import reports.domain.AppUser;
+import reports.domain.Authority;
 import reports.repository.AppUserRepository;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import reports.repository.AuthorityRepository;
+import java.util.*;
 
 @Service
 public class AppUserService {
 
     private AppUserRepository appUserRepository;
-    private SessionRegistry sessionRegistry;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private AuthorityRepository authorityRepository;
+    private AuthenticationService authenticationService;
 
     @Autowired
-    public AppUserService(AppUserRepository appUserRepository, SessionRegistry sessionRegistry, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AppUserService(AppUserRepository appUserRepository,
+                          BCryptPasswordEncoder bCryptPasswordEncoder,
+                          AuthorityRepository authorityRepository,
+                          AuthenticationService authenticationService) {
         this.appUserRepository = appUserRepository;
-        this.sessionRegistry = sessionRegistry;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.authorityRepository = authorityRepository;
+        this.authenticationService = authenticationService;
     }
 
     public List<AppUser> appUsers(){
         return appUserRepository.findAll();
-    }
-
-    public Set<AppUser> loggedInUsers() {
-        List<Object> allPrincipals = sessionRegistry.getAllPrincipals();
-        Set<AppUser> allAppUsers = new HashSet<>();
-        allAppUsers.clear();
-
-        for(final Object principal : allPrincipals) {
-            if(principal instanceof AppUser) {
-                AppUser user = (AppUser) principal;
-
-                List<SessionInformation> activeUserSessions =
-                        sessionRegistry.getAllSessions(principal,
-                                /* includeExpiredSessions */ false); // Should not return null;
-
-                if (!activeUserSessions.isEmpty()) {
-                    System.out.println(user);
-                    allAppUsers.add(user);}
-            }
-        }
-        return allAppUsers;
     }
 
     public ResponseEntity<AppUser> userById(Long id) {
@@ -97,7 +78,22 @@ public class AppUserService {
         else if (appUser.getPassword().length()<5) {
             throw new RuntimeException("Hasło musi mieć co najmniej 5 znaków");
         }
+
         appUser.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
+
+        int authorities = appUser.getAuthorities().size();
+        HashSet<Authority> set = new HashSet();
+        appUser.setAuthorities(Collections.emptySet());
+        appUserRepository.save(appUser);
+        if(authorities==1){
+            set.add(authorityRepository.findOneByName(Authority.UserRoleName.ROLE_USER));
+            appUser.setAuthorities(set);
+        }else{
+            set.add(authorityRepository.findOneByName(Authority.UserRoleName.ROLE_USER));
+            set.add(authorityRepository.findOneByName(Authority.UserRoleName.ROLE_ADMIN));
+            appUser.setAuthorities(set);
+        }
         return appUserRepository.save(appUser);
     }
+
 }

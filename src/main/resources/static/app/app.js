@@ -18,7 +18,7 @@ angular.module('Reports', [ 'ui.router' ])
 		} else {
 			// if user is authorized to view some views then show him
 			if (toState.data && toState.data.role) {
-				if (toState.data.role != AuthenticationService.user.principal.role) {
+				if (toState.data.role != AuthenticationService.roles) {
 					event.preventDefault();
 					$state.go('accessing-fault');
 				}
