@@ -48,28 +48,6 @@ public class TokenHelper {
         return username;
     }
 
-    public Date getIssuedAtDateFromToken(String token) {
-        Date issueAt;
-        try {
-            final Claims claims = this.getAllClaimsFromToken(token);
-            issueAt = claims.getIssuedAt();
-        } catch (Exception e) {
-            issueAt = null;
-        }
-        return issueAt;
-    }
-
-    public String getAudienceFromToken(String token) {
-        String audience;
-        try {
-            final Claims claims = this.getAllClaimsFromToken(token);
-            audience = claims.getAudience();
-        } catch (Exception e) {
-            audience = null;
-        }
-        return audience;
-    }
-
     public String refreshToken(String token, Device device) {
         String refreshedToken;
         Date a = new Date();
@@ -134,18 +112,11 @@ public class TokenHelper {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        AppUser appUser = (AppUser) userDetails;
         final String username = getUsernameFromToken(token);
-        final Date created = getIssuedAtDateFromToken(token);
         return (
                 username != null &&
-                        username.equals(userDetails.getUsername()) &&
-                        !isCreatedBeforeLastPasswordReset(created, appUser.getLastPasswordResetDate())
+                        username.equals(userDetails.getUsername())
         );
-    }
-
-    private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
-        return (lastPasswordReset != null && created.before(lastPasswordReset));
     }
 
     public String getToken(HttpServletRequest request) {
